@@ -1,0 +1,164 @@
+// homework2.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+using namespace std;
+
+template <class T>
+class Stack {
+	int length;
+	int capacity;
+	T *items;
+
+public:
+	Stack() {
+		items = new T[10];
+		length = 0;
+		capacity = 10;
+	}
+
+	~Stack() {
+		length = 0;
+	}
+
+	int recap(T arr[]) {
+		int new_capacity = capacity * 2;
+		T* elements = new T[new_capacity];
+		for (int i = 0; i < length; i++) {
+			elements[i] = arr[i];
+		}
+		arr = elements;
+		return new_capacity;
+	}
+
+	void push(T value) {
+		if (length + 1 > capacity) {
+			capacity = recap(items);
+		}
+		items[length] = value;
+		length++;
+	}
+
+	void print() {
+		for (int i = 0; i < length; i++) {
+			cout << i << " member is " << items[i] << "  capacity: "<<capacity<< endl;
+		}
+	}
+
+	void pop() {
+		length--;
+	}
+
+	bool is_empty() {
+		if (length == 0) {
+			return true;
+		}
+		return false;
+	}
+
+	T get_top() {
+		return items[length - 1];
+	}
+};
+
+template <class T>
+class Node {
+public:
+	T data;
+	Node* next;
+
+	void insert_data(T val) {
+		data = val;
+	}
+
+	void insert_next(Node* n) {
+		next = n;
+	}
+
+	bool next_isempty() {
+		if (next == NULL) {
+			return true;
+		}
+		return false;
+	}
+
+	Node* next_value() {
+		return next;
+	}
+
+	T get_value() {
+		return data;
+	}
+};
+
+
+template <class T>
+class Queue {
+	Node<T> l_head;
+
+	public:
+		Queue() {
+			l_head.insert_next(NULL);
+		}
+
+		void enqueue(T value) {
+
+				Node<T>* temp = (Node<T>*)malloc(sizeof(Node<T>));
+				if (l_head.next_isempty()) {
+					l_head.insert_next(temp);
+				}
+				else {
+					Node<T> last_el = l_head;
+					while (!last_el.next_isempty()) {
+						last_el = *last_el.next_value();
+					}
+					last_el.insert_next(temp);
+				}
+				Node<T> temp1 = *temp;
+				cout <<"Value in insert "<< temp<<endl;
+				temp1.insert_data(value);
+				temp1.insert_next(NULL);
+				cout << "Value of temp " << temp1.get_value()<<endl;
+
+		}
+
+		void print() {
+			Node<T>* temp = l_head.next_value();
+			cout << "Value in print: "<< l_head.next_value() << endl;
+			cout <<temp <<": "<< temp->get_value();
+			/**while (!temp.next_isempty()) {
+				temp = *temp.next_value();
+				cout << "Values: " << temp.get_value()<<endl;
+			}
+			*/
+		}
+};
+
+
+int main()
+{
+	/**Stack<int> first;
+	first.push(3);
+	first.push(8);	
+	first.push(0);
+	first.push(84);
+	first.push(9);
+	first.push(8);
+	first.push(1);
+	first.push(7);
+	first.push(8);
+	first.push(12);
+	first.push(8);
+	first.pop();
+	first.print();*/
+
+
+	Queue<int> link_list;
+	link_list.enqueue(5);
+	link_list.print();
+
+
+    return 0;
+}
+
