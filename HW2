@@ -1,5 +1,5 @@
 // homework2.cpp : Defines the entry point for the console application.
-//With Narek Bayramyan and Thomas Petrossian.
+//
 
 #include "stdafx.h"
 #include <iostream>
@@ -62,78 +62,56 @@ public:
 	}
 };
 
+
+
+
+
 template <class T>
-class Node {
-public:
+struct Node {
 	T data;
 	Node* next;
-
-	void insert_data(T val) {
-		data = val;
-	}
-
-	void insert_next(Node* n) {
-		next = n;
-	}
-
-	bool next_isempty() {
-		if (next == NULL) {
-			return true;
-		}
-		return false;
-	}
-
-	Node* next_value() {
-		return next;
-	}
-
-	T get_value() {
-		return data;
-	}
 };
-
 
 template <class T>
 class Queue {
-	Node<T> l_head;
+	Node<T>* head;
 
-	public:
-		Queue() {
-			l_head.insert_next(NULL);
+public:
+	Queue(){
+		head = NULL;
+	}
+
+	void enqueue(T value) {
+		Node<T>* new_node = (Node<T>*) malloc(sizeof(Node<T>));
+		new_node->data = value;
+		new_node->next = NULL;
+		if (head == NULL) {
+			head = new_node;
 		}
-
-		void enqueue(T value) {
-
-				Node<T>* temp = (Node<T>*)malloc(sizeof(Node<T>));
-				if (l_head.next_isempty()) {
-					l_head.insert_next(temp);
-				}
-				else {
-					Node<T> last_el = l_head;
-					while (!last_el.next_isempty()) {
-						last_el = *last_el.next_value();
-					}
-					last_el.insert_next(temp);
-				}
-				Node<T> temp1 = *temp;
-				cout <<"Value in insert "<< temp<<endl;
-				temp1.insert_data(value);
-				temp1.insert_next(NULL);
-				cout << "Value of temp " << temp1.get_value()<<endl;
-
-		}
-
-		void print() {
-			Node<T>* temp = l_head.next_value();
-			cout << "Value in print: "<< l_head.next_value() << endl;
-			cout <<temp <<": "<< temp->get_value();
-			/**while (!temp.next_isempty()) {
-				temp = *temp.next_value();
-				cout << "Values: " << temp.get_value()<<endl;
+		else {
+			Node<T>* last_element = head;
+			while (last_element->next != NULL) {
+				last_element = last_element->next;
 			}
-			*/
+			last_element->next = new_node;
 		}
+	}
+
+	void print() {
+		if (head != NULL) {
+			Node<T> * temp = head;
+			while (temp->next != NULL) {
+				cout << temp->data<<endl;
+				temp = temp->next;
+			}
+			cout << "Last element: " << temp->data<<endl;
+		}
+		else {
+			cout << "No elements." << endl;
+		}
+	}
 };
+
 
 
 int main()
@@ -153,10 +131,11 @@ int main()
 	first.pop();
 	first.print();*/
 
-
-	Queue<int> link_list;
-	link_list.enqueue(5);
-	link_list.print();
+	Queue<int> new_f;
+	new_f.enqueue(5);
+	new_f.enqueue(8);
+	new_f.enqueue(15);
+	new_f.print();
 
 
     return 0;
